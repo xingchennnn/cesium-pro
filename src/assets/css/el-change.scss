@@ -1,0 +1,380 @@
+.x-date-picker {
+    .el-input__wrapper {
+        height: 2.5rem !important;
+        background-color: rgba(17, 45, 72, 0.72) !important;
+        border-radius: 0.42rem !important;
+        border: 2px solid #45a3fa !important;
+        box-shadow: none !important;
+
+        .el-input__inner {
+            color: #ffffff !important;
+            font-size: 0.8333rem;
+        }
+    }
+}
+
+.x-form-date-picker {
+    width: 100%;
+    .el-input__wrapper {
+        width: 100%;
+        height: 2.08rem;
+        background-color: rgba(17, 45, 72, 0.72);
+        border-radius: var(--form-border-radius);
+        box-shadow: none;
+        border: 0.05rem solid var(--form-border-color);
+    }
+    .el-date-editor {
+        .el-range-separator {
+            color: #fff;
+        }
+
+        .el-range__icon {
+            display: none;
+        }
+
+        .el-range-input {
+            color: #fff;
+        }
+    }
+}
+
+.x-input {
+    .el-input {
+        .el-input__wrapper {
+            height: 2.08rem !important;
+            background: rgba(17, 45, 72, 0.72);
+            border-radius: 0.42rem !important;
+            border: 2px solid #45a3fa !important;
+            box-shadow: none !important;
+
+            .el-input__inner {
+                color: #ffffff !important;
+            }
+        }
+    }
+}
+
+.x-form-input {
+    width: 100%;
+    .el-input {
+        width: 100%;
+        height: 2.08rem;
+        --el-input-border: 0.05rem solid var(--form-border-color);
+        --el-input-text-color: #fff;
+        --el-input-bg-color: rgba(17, 45, 72, 0.72);
+        --el-input-border-color: var(--form-border-color);
+        --el-input-placeholder-color: #ffffff99;
+        --el-input-hover-border-color: var(--form-border-color);
+        --el-input-focus-border-color: var(--form-border-color);
+        --el-input-border-radius: var(--form-border-radius);
+    }
+
+    .el-textarea {
+        --el-input-text-color: #fff;
+        --el-input-border: 0.05rem solid var(--form-border-color);
+        --el-input-hover-border: var(--form-border-color);
+        --el-input-focus-border: var(--form-border-color);
+        --el-input-transparent-border: 0 0 0 1px transparent inset;
+        --el-input-border-color: var(--form-border-color);
+        --el-input-border-radius: var(--form-border-radius);
+        --el-input-bg-color: rgba(17, 45, 72, 0.72);
+        --el-input-icon-color: var(--form-border-color);
+        --el-input-placeholder-color: #ffffff99;
+        --el-input-hover-border-color: var(--form-border-color);
+        --el-input-clear-hover-color: var(--form-border-color);
+        --el-input-focus-border-color: var(--form-border-color);
+    }
+
+    .el-input__wrapper {
+        width: 100%;
+    }
+}
+
+.x-radio {
+    .el-radio__input.is-checked {
+        .el-radio__inner {
+            background: rgba(0, 0, 0, 0);
+            border-color: #45a3fa;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .el-radio__inner:after {
+            background-color: #45a3fa;
+            // height: 6px;
+            width: 0.83rem;
+            height: 0.83rem;
+        }
+    }
+
+    .el-radio__inner {
+        border-color: #45a3fa;
+        background: rgba(0, 0, 0, 0);
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+}
+
+.x-pagination {
+    .el-pagination {
+        .btn-prev,
+        .btn-next {
+            background-color: rgba(0, 0, 0, 0) !important;
+            border: 1px solid #45a3fa;
+            color: #ffffff;
+            width: 1.67rem;
+            height: 1.67rem;
+        }
+
+        .el-select {
+            --el-border-color-hover: #fff;
+            --el-disabled-text-color: #fff;
+            --el-text-color-regular: #fff;
+        }
+
+        .el-pagination__jump {
+            .el-pagination__goto {
+                color: #fff;
+            }
+            .el-pagination__classifier {
+                color: #fff;
+            }
+            .el-input__wrapper {
+                background-color: rgba(0, 0, 0, 0) !important;
+                border: 1px solid #45a3fa;
+                box-shadow: none !important;
+                width: 1.67rem;
+                height: 1.77rem;
+
+                .el-input__inner {
+                    color: #ffffff;
+                }
+            }
+        }
+
+        .el-select__wrapper {
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0) !important;
+            border: 1px solid #45a3fa;
+            box-shadow: none !important;
+            height: 1.77rem;
+            min-height: 1.67rem;
+        }
+
+        .el-pager {
+            li {
+                background-color: rgba(0, 0, 0, 0) !important;
+                color: #ffffff;
+                font-size: 0.94rem;
+            }
+
+            .btn-quicknext {
+                border: 1px solid #45a3fa;
+                width: 1.67rem;
+                height: 1.67rem;
+            }
+
+            .number {
+                width: 1.67rem;
+                height: 1.67rem;
+                background: #112d48;
+                border-radius: 0.1rem;
+                border: 1px solid #45a3fa;
+                opacity: 0.8;
+            }
+
+            .is-active {
+                background: url("@/assets/image/icon/page_num_bg.png") no-repeat;
+                background-size: 100% 100%;
+                width: 1.77rem;
+                height: 1.77rem;
+                border: none;
+            }
+        }
+    }
+}
+
+.x-table {
+    .el-table {
+        cursor: pointer;
+        --el-table-header-bg-color: none; //表头背景色
+
+        --el-table-border-color: none; //边框颜色
+        --el-table-tr-bg-color: #121f2e33; //行背景色
+        --el-table-current-row-bg-color: none; //鼠标悬停行激活背景色
+        --el-table-bg-color: none; //表格全局背景色
+        --el-table-text-color: #fff; //表格全局文字颜色
+        --el-table-header-text-color: #fff; //表头文字颜色
+        --el-table-row-hover-bg-color: #0b7eff80; //鼠标悬停行背景色
+
+        --el-fill-color-lighter: none;
+        --el-fill-color-lighter: #121f2e66;
+
+        .el-table__header {
+            border-top: 1px solid #45a3fa;
+            thead {
+                background: linear-gradient(to right, #004491, #05142466);
+            }
+        }
+    }
+    .el-table--enable-row-transition .el-table__body td.el-table__cell {
+        height: 50px;
+    }
+}
+
+.x-rate {
+    pointer-events: none;
+    height: 0.83rem;
+
+    .el-rate {
+        --el-rate-icon-size: 0.73rem;
+        height: 0.83rem;
+
+        .el-rate__icon {
+            margin-right: 0.16rem;
+            font-size: 0.83rem;
+        }
+    }
+}
+
+.x-form-select {
+    width: 100%;
+
+    .el-select {
+        --el-select-border-color-hover: var(--form-border-color);
+        --el-select-close-hover-color: var(--form-border-color);
+        --el-select-input-color: #fff;
+        --el-select-input-focus-border-color: var(--form-border-color);
+    }
+
+    .el-select__wrapper {
+        background-color: rgba(17, 45, 72, 0.72);
+        border-radius: var(--form-border-radius);
+        box-shadow: none;
+        height: 2.08rem;
+        line-height: 2.08rem;
+        border: 0.05rem solid var(--form-border-color);
+    }
+
+    .el-select__placeholder.is-transparent {
+        color: #ffffff99;
+    }
+
+    .el-select__placeholder {
+        color: #ffffff;
+    }
+}
+
+.x-form-radio {
+    .el-radio {
+        --el-radio-text-color: #fff;
+        --el-radio-font-size: 0.83rem;
+        --el-radio-input-height: 1.25rem;
+        --el-radio-input-width: 1.25rem;
+        --el-radio-input-border-radius: var(--el-border-radius-circle);
+        --el-radio-input-bg-color: #fff;
+        --el-radio-input-border: var(--el-border);
+        --el-radio-input-border-color: var(--form-border-color);
+        --el-radio-input-border-color-hover: var(--form-border-color);
+        color: var(--el-radio-text-color);
+        font-size: var(--el-font-size-base);
+
+        .el-radio__inner {
+            background: transparent;
+            border: 0.05rem solid var(--form-border-color);
+
+            &::after {
+                background-color: var(--form-border-color);
+                border: 0.37rem solid transparent;
+                width: 0.83rem;
+                height: 0.83rem;
+            }
+        }
+
+        .el-radio__input.is-checked+.el-radio__label {
+            color: #fff;
+        }
+    }
+}
+
+.x-form {
+    .el-form-item__error {
+        font-size: 0.5208rem;
+        line-height: 0.5208rem;
+    }
+
+    .el-form-item__label {
+        color: #77C1FF;
+        padding: 0 0.57rem 0 0;
+        height: 2.08rem;
+        line-height: 2.08rem;
+    }
+
+    .el-form-item--default {
+        margin-bottom: 0.63rem;
+    }
+
+    .el-input__prefix {
+        display: none;
+    }
+}
+
+.x-tag {
+    .el-tag {
+        width: 7.19rem;
+        height: 2.08rem;
+        border-width: 0.05rem;
+        --el-tag-border-radius: var(--form-border-radius);
+        --el-tag-bg-color: rgba(17, 45, 72, 0.72);
+        --el-tag-border-color: var(--form-border-color);
+        font-size: 0.83rem;
+        color: #fff;
+
+        & + .el-tag {
+            margin-left: 0.63rem;
+        }
+
+        .el-tag__content {
+            display: flex;
+        }
+
+        .el-tag__close {
+            color: #fff;
+        }
+
+        .el-icon {
+            font-size: 0.63rem;
+            width: 0.63rem;
+            height: 0.63rem;
+        }
+    }
+}
+
+.x-descriptions {
+    padding: 1.04rem;
+
+    .el-descriptions {
+        color: #fff;
+
+        .el-descriptions__body {
+            background-color: transparent;
+        }
+
+        .el-descriptions__cell {
+            padding-bottom: 1.09rem !important;
+            font-size: 0.83rem;
+            line-height: 0.83rem;
+        }
+
+        .el-descriptions__label:not(.is-bordered-label) {
+            color: #77c1ff;
+            width: 3.8rem;
+            text-align: right;
+            display: inline-block;
+        }
+
+        .el-descriptions__content:not(.is-bordered-label) {
+            color: #fff;
+        }
+    }
+}

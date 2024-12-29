@@ -1,0 +1,42 @@
+{
+  "name": "cesium-pro",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@types/js-cookie": "^3.0.6",
+    "axios": "^1.6.7",
+    "cesium": "^1.124.0",
+    "echarts": "^5.5.0",
+    "element-plus": "^2.7.3",
+    "gsap": "^3.12.5",
+    "js-cookie": "^3.0.5",
+    "mitt": "^3.0.1",
+    "pinia": "^2.1.7",
+    "popoload": "^1.0.9",
+    "three": "^0.165.0",
+    "vite-plugin-cesium": "^1.2.23",
+    "vue": "^3.5.13",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.2",
+    "@types/node": "^20.11.10",
+    "@types/three": "^0.165.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "npm-run-all2": "^6.1.1",
+    "sass": "^1.77.1",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.5",
+    "vite-plugin-copy": "^0.1.6",
+    "vite-plugin-static-copy": "^2.2.0",
+    "vue-tsc": "^2.2.0"
+  }
+}

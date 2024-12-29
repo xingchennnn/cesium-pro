@@ -1,0 +1,93 @@
+:root {
+  --max-width: 100rem;
+  --max-height: 49.48rem;
+  --btn-border-color: #29ACFF;
+  --default-margin-top: 0.625rem;
+  --form-border-color: #45A3FA;
+  --form-border-radius: .42rem;
+  --pop-title-color: linear-gradient(90deg, #1A97FF 0%, rgba(0, 84, 163, 0.5) 100%);
+  --font-size-14: .7292rem;
+  --font-size-16: .8333rem;
+  --font-size-18: .9375rem;
+  --font-size-20: 1.0417rem;
+  --font-size-22: 1.1458rem;
+  --font-size-24: 1.25rem;
+  --title-width:3.75rem;
+}
+
+@font-face {
+  font-family: 'SiYuanHeiTi';
+  src:
+    url('../fonts/SiYuanHeiTi-Normal.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SiYuanHeiTiBold';
+  src:
+    url('../fonts/SiYuanHeiTi-Bold.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.font-size14 {
+  font-size: var(--font-size-14);
+}
+
+.font-size16 {
+  font-size: var(--font-size-16);
+}
+
+.font-size18 {
+  font-size: var(--font-size-18);
+}
+
+.font-size20 {
+  font-size: var(--font-size-20);
+}
+
+.font-size22 {
+  font-size: var(--font-size-22);
+}
+
+.font-size24 {
+  font-size: var(--font-size-24);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family: 'SiYuanHeiTi';
+  font-size: 14px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.font-yellow {
+  color: #FFC21C;
+}

@@ -1,0 +1,87 @@
+@import "./base.css";
+
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.flex {
+  display: flex;
+}
+
+.h-center {
+  justify-content: center;
+}
+
+.h-start {
+  justify-content: flex-start;
+}
+
+.h-end {
+  justify-content: flex-end;
+}
+
+.v-center {
+  align-items: center;
+}
+
+.v-start {
+  align-items: flex-start;
+}
+
+.v-end {
+  align-items: flex-end;
+}
+
+.self-center {
+  align-self: center;
+}
+
+.max-w {
+  width: 100%;
+}
+
+.max-h {
+  height: 100%;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.around {
+  justify-content: space-around;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.hide {
+  display: none;
+}
+
+.no-select {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* 标准语法 */
+}
+
+
+.pointer-box{
+  pointer-events: auto;
+}
+
+
+/* 1,滚动条 */
+* ::-webkit-scrollbar {
+  display: none;
+}
+
