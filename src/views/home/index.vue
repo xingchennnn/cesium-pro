@@ -21,7 +21,7 @@ const SceneWiewer = ref<Scene | null>(null);
 
 Cesium.Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmMDc5YmU2NS04YmY4LTQ2MzMtODkxYy1lMjFmM2IyNGM1ODciLCJpZCI6MjI5NTQ2LCJpYXQiOjE3MjE0NDY2Mzl9.5jyLlq5jDKAR-mQAICUfSrD93sXqwHRf8KVbL5Rr_i8";
-onMounted(() => {
+onMounted(async() => {
   console.log("cesium", Cesium);
   const viewer = new Cesium.Viewer("cesiumContainerapp", {
     //一般false都是隐藏控件
@@ -45,6 +45,10 @@ onMounted(() => {
     fullscreenButton: false,
     //切换vr模式
     vrButton: false,
+    // 加载地形
+    // terrainProvider: await Cesium.CesiumTerrainProvider.fromIonAssetId(3956, {
+    //  requestVertexNormals: true
+    // })
   });
   // 去除版权信息
   (viewer.cesiumWidget.creditContainer as HTMLElement).style.display = "none";
