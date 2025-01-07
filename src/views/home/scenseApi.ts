@@ -1,4 +1,4 @@
-import type { Viewer } from "cesium";
+// import type { Viewer } from "cesium";
 import * as Cesium from "cesium";
 
 class Scene {
@@ -6,7 +6,8 @@ class Scene {
   }
 
   // viewer对象
-  private  viewer: Viewer|any = null;
+  // @ts-ignore
+  private  viewer: Cesium.Viewer;
   // 单例模式
   private static  _instance: Scene;
   // 获取单例对象
@@ -19,7 +20,7 @@ class Scene {
 
 
   // 初始化viewer
-  public init(viewer: Viewer) {
+  public init(viewer: Cesium.Viewer) {
     this.viewer = viewer;
   }
 
