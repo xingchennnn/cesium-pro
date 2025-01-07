@@ -6,7 +6,7 @@ class Scene {
   }
 
   // viewer对象
-  private  viewer: Viewer;
+  private  viewer: Viewer|any = null;
   // 单例模式
   private static  _instance: Scene;
   // 获取单例对象
