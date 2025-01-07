@@ -13,11 +13,12 @@ import "cesium/Build/Cesium/Widgets/widgets.css";
 import * as Cesium from "cesium";
 import { onMounted } from "vue";
 import { ref } from "vue";
-import Scene from "./scense";
+// import Scene from "./scenseApi";
+import SceneControl from "./sceneControl";
 
 const cesiumContainer = ref(null);
 
-const SceneWiewer = ref<Scene | null>(null);
+// const SceneWiewer = ref<Cesium.Viewer | null>(null);
 
 Cesium.Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmMDc5YmU2NS04YmY4LTQ2MzMtODkxYy1lMjFmM2IyNGM1ODciLCJpZCI6MjI5NTQ2LCJpYXQiOjE3MjE0NDY2Mzl9.5jyLlq5jDKAR-mQAICUfSrD93sXqwHRf8KVbL5Rr_i8";
@@ -54,9 +55,10 @@ onMounted(async() => {
   (viewer.cesiumWidget.creditContainer as HTMLElement).style.display = "none";
 
   console.log("viewer", viewer);
-  SceneWiewer.value = new Scene(viewer);
+  // SceneWiewer.value = new Scene(viewer);
+  SceneControl.api.init(viewer);
 
-  SceneWiewer.value.fitTo([106.4388,29.4494,281])
+  SceneControl.api.fitTo([106.4388,29.4494,281])
 });
 
 

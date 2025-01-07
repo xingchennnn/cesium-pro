@@ -2,11 +2,29 @@ import type { Viewer } from "cesium";
 import * as Cesium from "cesium";
 
 class Scene {
-  viewer: Viewer;
-
-  constructor(wiewer: Viewer) {
-    this.viewer = wiewer;
+  private constructor() {
   }
+
+  // viewer对象
+  private  viewer: Viewer;
+  // 单例模式
+  private static  _instance: Scene;
+  // 获取单例对象
+  public static get instance(): Scene {
+    if (!this._instance) {
+      this._instance = new Scene();
+    }
+    return this._instance;
+  }
+
+
+  // 初始化viewer
+  public init(viewer: Viewer) {
+    this.viewer = viewer;
+  }
+
+  
+
   
 
   // 飞向位置
