@@ -84,4 +84,12 @@ body {
 * ::-webkit-scrollbar {
   display: none;
 }
+/* 事件生效 */
+.pointer-events-all {  
+  pointer-events: all;
+}
+/* 事件失效 */
+.pointer-events-none {  
+  pointer-events: none;
+}
 

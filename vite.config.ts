@@ -27,6 +27,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
+      '/icon': {
+        target: 'http://49.234.58.117:9000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/icon/, ''),
+        
+      }
     },
   },
   build: {

@@ -4,7 +4,12 @@
     id="cesiumContainerapp"
     ref="cesiumContainer"
   ></div>
-  <!-- <div>234</div> -->
+  <div class="container pointer-events-none">
+
+    <div class="left-container">
+      <menu-bar></menu-bar>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -15,6 +20,7 @@ import { onMounted } from "vue";
 import { ref } from "vue";
 // import Scene from "./scenseApi";
 import SceneControl from "./sceneControl";
+import menuBar from "./components/menuBar.vue";
 
 const cesiumContainer = ref(null);
 
@@ -58,7 +64,7 @@ onMounted(async() => {
   // SceneWiewer.value = new Scene(viewer);
   SceneControl.api.init(viewer);
 
-  SceneControl.api.fitTo([106.4388,29.4494,281])
+  // SceneControl.api.flyToDot([106.4388,29.4494,281])
 });
 
 
@@ -68,5 +74,20 @@ onMounted(async() => {
 .cesium-container {
   width: 100vw;
   height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.container{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  .left-container{
+    height: 100%;
+  }
 }
 </style>
