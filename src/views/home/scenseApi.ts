@@ -22,7 +22,17 @@ class Scene {
     this.viewer = viewer;
   }
 
-
+  /**
+   * primitives 渲染
+   */
+  public Cesium3DTileset() {
+    //     Cesium3DTileset: 加载 3D Tiles 数据集。
+    // viewer.scene.primitives.add: 将 Primitive 添加到场景中。
+    const primitive = this.viewer.scene.primitives.add(
+      Cesium.Cesium3DTileset.fromUrl("path/to/tileset.json")
+    );
+    this.viewer.zoomTo(primitive); //缩放到图层
+  }
 
   /**
    * 添加点位
@@ -31,14 +41,30 @@ class Scene {
   public addPoint(position: number[]) {
     //添加点
     this.viewer.entities.add({
-      position: Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]),
+      name: "重庆",
+      position: Cesium.Cartesian3.fromDegrees(
+        position[0],
+        position[1],
+        position[2]
+      ),
       point: {
         pixelSize: 10,
         color: Cesium.Color.RED,
         // outlineColor: Cesium.Color.WHITE,
         // outlineWidth: 2,
       },
+      label: {
+        text: "重庆",
+        font: "14pt sans-serif",
+        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+        outlineWidth: 2,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+        pixelOffset: new Cesium.Cartesian2(0, -15),
+      },
+      description: "<h3>重庆</h3><p>人口: 30000,000</p>",
     });
+    // 定位到点位
+    this.viewer.zoomTo(this.viewer.entities);
   }
 
   /**
@@ -48,7 +74,11 @@ class Scene {
   public addLine(positions: number[][]) {
     //添加线
     let positionsCartesian3 = positions.map((position) => {
-      return Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
+      return Cesium.Cartesian3.fromDegrees(
+        position[0],
+        position[1],
+        position[2]
+      );
     });
     this.viewer.entities.add({
       name: "线",
@@ -72,7 +102,11 @@ class Scene {
   public addPolygon(positions: number[][]) {
     //添加面
     let positionsCartesian3 = positions.map((position) => {
-      return Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
+      return Cesium.Cartesian3.fromDegrees(
+        position[0],
+        position[1],
+        position[2]
+      );
     });
     this.viewer.entities.add({
       name: "面",
@@ -117,7 +151,7 @@ class Scene {
   // 飞向物体
   public flyToEntity(entity: Cesium.Entity) {
     this.viewer.camera.flyTo({
-      destination: entity.position,
+      destination:Cesium.Cartesian3.fromDegrees(...entity.position),
       orientation: {
         heading: Cesium.Math.toRadians(0), //水平角
         pitch: Cesium.Math.toRadians(-60), //竖直角
@@ -139,24 +173,24 @@ class Scene {
 
   // 飞向区域
   public flyToRegion(region: Cesium.Rectangle) {
-    // this.viewer.camera.flyTo({
-    //   destination: Cesium.Rectangle.center(region),
-    //   orientation: {
-    //     heading: Cesium.Math.toRadians(0), //水平角
-    //     pitch: Cesium.Math.toRadians(-60), //竖直角
-    //     roll: 0, //翻滚角
-    //   },
-    //   complete: () => {
-    //     // 获取当前相机的角度
-    //     let heading = this.viewer.camera.heading;
-    //     let pitch = this.viewer.camera.pitch;
-    //     let roll = this.viewer.camera.roll;
-    //     // 输出当前的角度
-    //     console.log(`Heading: ${Cesium.Math.toDegrees(heading)}`);
-    //     console.log(`Pitch: ${Cesium.Math.toDegrees(pitch)}`);
-    //     console.log(`Roll: ${Cesium.Math.toDegrees(roll)}`);
-    //   },
-    // });
+    this.viewer.camera.flyTo({
+      destination: region,
+      orientation: {
+        heading: Cesium.Math.toRadians(0), //水平角
+        pitch: Cesium.Math.toRadians(-60), //竖直角
+        roll: 0, //翻滚角
+      },
+      complete: () => {
+        // 获取当前相机的角度
+        let heading = this.viewer.camera.heading;
+        let pitch = this.viewer.camera.pitch;
+        let roll = this.viewer.camera.roll;
+        // 输出当前的角度
+        console.log(`Heading: ${Cesium.Math.toDegrees(heading)}`);
+        console.log(`Pitch: ${Cesium.Math.toDegrees(pitch)}`);
+        console.log(`Roll: ${Cesium.Math.toDegrees(roll)}`);
+      },
+    });
   }
 
   // 添加点击事件--读取位置信息
@@ -299,6 +333,30 @@ class Scene {
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
       },
     });
+  }
+
+  /**
+   * 移除所有图层 创建新的图层
+   */
+  public async removeAllimageryLayers() {
+    // 移除所有影像图层
+    this.viewer.imageryLayers.removeAll();
+
+    // 添加 OpenStreetMap 图层
+    this.viewer.imageryLayers.addImageryProvider(
+      new Cesium.OpenStreetMapImageryProvider({})
+    );
+
+    // 添加 Bing Maps 图层
+    this.viewer.imageryLayers.addImageryProvider(
+      await Cesium.BingMapsImageryProvider.fromUrl(
+        "https://dev.virtualearth.net",
+        {
+          key: "Your Bing Maps Key",
+          mapStyle: Cesium.BingMapsStyle.AERIAL,
+        }
+      )
+    );
   }
 }
 

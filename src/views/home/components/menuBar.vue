@@ -84,8 +84,9 @@ const handleSelect = (index: string) => {
       break;
     case "addline":
       SceneControl.api.addLine([
-        [106.4388, 29.4494, 281],
-        [106.4307, 29.4436, 10],
+      [116.4074, 39.9042, 10], // 北京
+      [121.4737, 31.2304, 10], // 上海
+      [113.2644, 23.1291, 10]  // 广州
       ]);
       break;
     case "addpolygon":
