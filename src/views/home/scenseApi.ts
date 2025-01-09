@@ -177,24 +177,29 @@ class Scene {
    * @param url 模型地址
    * @param position [经度，纬度，高度]
    */
-  public addModel() {
+  public addModel(url: string, positions: number[]) {
     //添加模型
+    console.log("addModel", url);
+
     // 定义立方体几何体
-    var boxGeometry = new Cesium.BoxGeometry({
+    let boxGeometry = new Cesium.BoxGeometry({
       vertexFormat: Cesium.VertexFormat.POSITION_AND_NORMAL,
-      maximum: new Cesium.Cartesian3(250000.0, 250000.0, 250000.0),
-      minimum: new Cesium.Cartesian3(-250000.0, -250000.0, -250000.0),
+      maximum: new Cesium.Cartesian3(100.0, 100.0, 100.0),
+      minimum: new Cesium.Cartesian3(1.0, 1.0, 1.0),
     });
 
     // 定义外观（材质）
-    var material = Cesium.Color.fromBytes(255, 0, 0, 255); // 红色
-    var appearance = new Cesium.PerInstanceColorAppearance({
+    let material = Cesium.Color.fromBytes(255, 0, 0, 255); // 红色
+    let appearance = new Cesium.PerInstanceColorAppearance({
       flat: true,
       // color: material,
     });
 
     // 创建Primitive
-    var primitive = new Cesium.Primitive({
+    let primitive = new Cesium.Primitive({
+      modelMatrix: Cesium.Transforms.eastNorthUpToFixedFrame(
+        Cesium.Cartesian3.fromDegrees(positions[0], positions[1], positions[2])
+      ),
       geometryInstances: new Cesium.GeometryInstance({
         geometry: boxGeometry,
         attributes: {
@@ -206,7 +211,15 @@ class Scene {
 
     // 添加到场景
     this.viewer.scene.primitives.add(primitive);
-
+    // 定位到点位
+    this.viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(
+        positions[0],
+        positions[1],
+        positions[2] + 200
+      ),
+      duration: 2.0, // 平滑过渡，持续1秒
+    });
   }
 
   /**
@@ -372,24 +385,53 @@ class Scene {
       name: "电子围栏",
       polyline: polyline,
     });
+
     // 电子围栏的点击事件
-    (eagleFence.polyline as any).clickEvent = new Cesium.Event();
-    (eagleFence.polyline as any).clickEvent.addEventListener(
-      Cesium.ScreenSpaceEventType.LEFT_CLICK,
-      (click: any) => {
-        let pickPosition = this.viewer.scene.pickPosition(click.position);
-        if (pickPosition) {
-          let cartographic = Cesium.Cartographic.fromCartesian(pickPosition);
-          console.log(
-            Cesium.Math.toDegrees(cartographic.longitude).toFixed(4) +
-              "," +
-              Cesium.Math.toDegrees(cartographic.latitude).toFixed(4) +
-              "," +
-              cartographic.height
-          ); //+ cartographic.height
-        }
-      }
-    );
+    // (eagleFence.polyline as any).clickEvent = new Cesium.Event();
+    // (eagleFence.polyline as any).clickEvent.addEventListener(
+    //   Cesium.ScreenSpaceEventType.LEFT_CLICK,
+    //   (click: any) => {
+    //     let pickPosition = this.viewer.scene.pickPosition(click.position);
+    //     if (pickPosition) {
+    //       let cartographic = Cesium.Cartographic.fromCartesian(pickPosition);
+    //       console.log(
+    //         Cesium.Math.toDegrees(cartographic.longitude).toFixed(4) +
+    //           "," +
+    //           Cesium.Math.toDegrees(cartographic.latitude).toFixed(4) +
+    //           "," +
+    //           cartographic.height
+    //       ); //+ cartographic.height
+    //     }
+    //   }
+    // );
+
+    // 飞行到围栏
+    this.viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(...positions[0]),
+      orientation: {
+        heading: Cesium.Math.toRadians(0), //水平角
+        pitch: Cesium.Math.toRadians(-60), //竖直角
+        roll: 0, //翻滚角
+      },
+    });
+  }
+
+  /**
+   * 雷达图扫描
+   * @param positions 扫描点位
+   */
+  public radarScan(positions: [number, number, number]) {
+    let startPoint = Cesium.Cartesian3.fromDegrees(...positions);
+
+    this.viewer.entities.add({
+      name: "雷达扫描效果",
+      position: startPoint,
+      ellipse: {
+        semiMinorAxis: 2000, //扫描圈半径
+        semiMajorAxis: 2000, //扫描圈半径
+        material: new Cesium.GridMaterialProperty(),
+      },
+    });
   }
 
   // 添加弹窗
@@ -671,19 +713,59 @@ class Scene {
   }
 
   /**
-   * 移除天空盒
-   */
-  public removeSkyBox() {
-    // 移除天空盒
-    this.viewer.scene.skyBox = undefined;
-  }
-
-  /**
    * 移除模型
    */
   public removeModel(model: Cesium.Model) {
     // 移除模型
     this.viewer.scene.primitives.remove(model);
+  }
+
+  /**
+   * 加载geojson数据
+   */
+  public loadGeojsonData() {
+    fetch("/file/GeoJson.json")
+      .then((response) => response.json())
+      .then((geoJson) => {
+        console.log(geoJson);
+
+        Cesium.GeoJsonDataSource.load(geoJson).then(dataSource => {
+          this.viewer.dataSources.add(dataSource);
+          this.viewer.zoomTo(dataSource);
+    
+          // 添加点击事件
+          const handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+          handler.setInputAction((click: any)=> {
+            const pickedObject = this.viewer.scene.pick(click.position);
+            if (Cesium.defined(pickedObject) && pickedObject.id) {
+              console.log('pickedObject', pickedObject);
+              // 获取geojson数据参数
+              const name = pickedObject.id.name;
+
+              // 字符串连接
+              let joinString = `name: ${name} | `;
+              // 获取geojson数据属性
+              pickedObject.id.properties.propertyNames.forEach((propertyName: string) => { 
+                console.log(propertyName, pickedObject.id.properties[propertyName].getValue());
+                joinString += `${propertyName}: ${pickedObject.id.properties[propertyName].getValue()} | `;
+              })
+
+
+              console.log('content', joinString);
+              
+              // 选中对象
+              this.viewer.selectedEntity = pickedObject.id;
+            }
+          }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+        });
+
+      })
+      .catch((error) => console.error(error));
+
+    // 加载geojson数据
+    // const geojson = new Cesium.GeoJsonDataSource(geojsonData);
+    // 显示数据
+    // this.viewer.dataSources.add(geojson);
   }
 }
 

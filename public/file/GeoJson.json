@@ -1,0 +1,64 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "北京",
+        "population": 21540000
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          116.4074,
+          39.9042
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "上海",
+        "population": 24240000
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4737,
+          31.2304
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "广州",
+        "population": 13500000
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          113.2644,
+          23.1291
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "重庆",
+        "population": 10000000,
+        "人":"3000人",
+        "哈哈哈":"哈哈哈"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.5826,
+          29.5681,
+          127.12404255415517
+        ]
+      }
+    }
+  ]
+}

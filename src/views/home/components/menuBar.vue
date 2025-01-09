@@ -22,6 +22,8 @@
           <el-menu-item index="addpolygon">添加面</el-menu-item>
           <el-menu-item index="addPipeLine">添加管道</el-menu-item>
           <el-menu-item index="addModel">添加几何体</el-menu-item>
+          <el-menu-item index="addEagleFence">添加电子围栏</el-menu-item>
+          <el-menu-item index="radarScan">添加 雷达</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="1-2">
           <template #title>
@@ -66,10 +68,19 @@
         <el-icon><document /></el-icon>
         <span>移除所有实体</span>
       </el-menu-item>
-      <el-menu-item index="4">
-        <el-icon><setting /></el-icon>
-        <span>Navigator Four</span>
-      </el-menu-item>
+      <el-sub-menu index="4">
+        <template #title>
+          <el-icon><location /></el-icon>
+          <span>加载数据</span>
+        </template>
+        <el-sub-menu index="4-1">
+          <template #title>
+            <span>geo</span>
+          </template>
+          <el-menu-item index="loadGeojson">加载geojson</el-menu-item>
+
+        </el-sub-menu>
+      </el-sub-menu>
     </el-menu>
     <!-- //创建 html 元素并隐藏 -->
     <div
@@ -93,7 +104,6 @@ import {
   Document,
   Menu as IconMenu,
   Location,
-  Setting,
 } from "@element-plus/icons-vue";
 import SceneControl from "../sceneControl";
 
@@ -101,36 +111,51 @@ const handleSelect = (index: string) => {
   console.log(index);
   switch (index) {
     case "addpoint":
-      SceneControl.api.addPoint([106.4388, 29.4494, 10]);
+      SceneControl.api.addPoint([106.4388, 29.4494, 300]);
       break;
     case "addline":
       SceneControl.api.addLine([
-      [116.4074, 39.9042, 10], // 北京
-      [121.4737, 31.2304, 10], // 上海
-      [113.2644, 23.1291, 10]  // 广州
+      [116.4074, 39.9042, 300], // 北京
+      [121.4737, 31.2304, 300], // 上海
+      [113.2644, 23.1291, 300]  // 广州
       ]);
       break;
     case "addpolygon":
       SceneControl.api.addPolygon([
-        [106.422, 29.4521, 10],
-        [106.4307, 29.4436, 10],
-        [106.4388, 29.4494, 10],
-        [106.4299, 29.4562, 10],
+        [106.422, 29.4521, 300],
+        [106.4307, 29.4436, 300],
+        [106.4388, 29.4494, 300],
+        [106.4299, 29.4562, 300],
       ]);
       break;
     case "addPipeLine":
       SceneControl.api.addPipeLine();
       break;
     case "addModel":
-
+      SceneControl.api.addModel(
+        "https://zouyaoji.top/vue-cesium/statics/SampleData/models/CesiumAir/Cesium_Air.glb",
+        [106.4388, 29.4494, 300]
+      );
+      break;
+    case "addEagleFence":
+      SceneControl.api.addEagleFence([
+        [106.422, 29.4521, 300],
+        [106.4307, 29.4436, 300],
+        [106.4388, 29.4494, 300],
+        [106.4299, 29.4562, 300],
+        [106.422, 29.4521, 300],
+      ]);
+      break;
+    case "radarScan":
+      SceneControl.api.radarScan([106.4388, 29.4494, 300]);
       break;
     case "addfire":
-      SceneControl.api.addFire([106.4388, 29.4494, 11]);
+      SceneControl.api.addFire([106.4388, 29.4494, 300]);
       break;
     case "addsmoke":
       break;
     case "addrain":
-      SceneControl.api.addRain([106.4388, 29.4494, 10]);
+      SceneControl.api.addRain([106.4388, 29.4494, 300]);
       break;
     case "addsnow":
       break;
@@ -143,16 +168,16 @@ const handleSelect = (index: string) => {
       SceneControl.api.removeFog();
       break;
     case "flyToDot":
-      SceneControl.api.flyToDot([106.4388, 29.4494, 10]);
+      SceneControl.api.flyToDot([106.4388, 29.4494, 300]);
       break;
     case "flyToEntity":
       // SceneControl.api.flyToEntity();
       break;
     case "addIcon":
-      SceneControl.api.addIcon([106.4388, 29.4494, 10]);
+      SceneControl.api.addIcon([106.4388, 29.4494, 300]);
       break;
     case "addLabel":
-      SceneControl.api.addLabel([106.4388, 29.4494, 10], "测试文字");
+      SceneControl.api.addLabel([106.4388, 29.4494, 300], "测试文字");
       break;
     case "addClickEvent":
       SceneControl.api.addClickEvent();
@@ -163,11 +188,15 @@ const handleSelect = (index: string) => {
     case "addHtmlElement":
       // const element = document.getElementById("htmlelement");
       // element.style.display = "block";
-      SceneControl.api.addPopup([106.4388, 29.4494, 10], "htmlelement");
+      SceneControl.api.addPopup([106.4388, 29.4494, 300], "htmlelement");
       break;
     case "removeAllEntities":
         SceneControl.api.removeAllEntities();
-        break;
+      break;
+
+    case "loadGeojson":
+      SceneControl.api.loadGeojsonData();
+      break;
     default:
       break;
   }

@@ -54,7 +54,7 @@ onMounted(async () => {
     // terrainProvider: await Cesium.CesiumTerrainProvider.fromIonAssetId(3956, {
     //  requestVertexNormals: true
     // })
-    geocoder: Cesium.IonGeocodeProviderType.GOOGLE,
+    // geocoder: Cesium.IonGeocodeProviderType.GOOGLE,
   });
   // 去除版权信息
   (viewer.cesiumWidget.creditContainer as HTMLElement).style.display = "none";
