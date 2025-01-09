@@ -361,7 +361,7 @@ class Scene {
 
 
   //添加管廊模型
-  addPipeLine() {
+  public addPipeLine() {
     // const { viewer, splitViewer } = clientViewerData;
     const redTube = this.viewer.entities.add({
       name: "红色管道",
@@ -384,8 +384,8 @@ class Scene {
     this.viewer.zoomTo(redTube);
   }
 
-
-  computeCircle(radius:any) {
+  // 计算圆形 -- 添加管廊模型使用
+  private computeCircle(radius:any) {
     const positions = [];
     for (let i = 0; i < 360; i++) {
       const radians = Cesium.Math.toRadians(i);
