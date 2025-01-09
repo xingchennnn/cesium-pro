@@ -21,6 +21,7 @@
           <el-menu-item index="addline">添加线</el-menu-item>
           <el-menu-item index="addpolygon">添加面</el-menu-item>
           <el-menu-item index="addPipeLine">添加管道</el-menu-item>
+          <el-menu-item index="addModel">添加几何体</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="1-2">
           <template #title>
@@ -47,6 +48,8 @@
           <el-menu-item index="addrain">添加雨滴动画</el-menu-item>
           <el-menu-item index="addsnow">添加雪花动画</el-menu-item>
           <el-menu-item index="addboom">添加爆炸动画</el-menu-item>
+          <el-menu-item index="addfog">添加雾动画</el-menu-item>
+          <el-menu-item index="removeFog">移除雾动画</el-menu-item>
         </el-sub-menu>
       </el-sub-menu>
       <el-sub-menu index="2">
@@ -59,9 +62,9 @@
           <el-menu-item index="removeClickEvent">移除点击事件</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
-      <el-menu-item index="3" disabled>
+      <el-menu-item index="removeAllEntities" >
         <el-icon><document /></el-icon>
-        <span>Navigator Three</span>
+        <span>移除所有实体</span>
       </el-menu-item>
       <el-menu-item index="4">
         <el-icon><setting /></el-icon>
@@ -118,16 +121,26 @@ const handleSelect = (index: string) => {
     case "addPipeLine":
       SceneControl.api.addPipeLine();
       break;
+    case "addModel":
+
+      break;
     case "addfire":
       SceneControl.api.addFire([106.4388, 29.4494, 11]);
       break;
     case "addsmoke":
       break;
     case "addrain":
+      SceneControl.api.addRain([106.4388, 29.4494, 10]);
       break;
     case "addsnow":
       break;
     case "addboom":
+      break;
+    case "addfog":
+      SceneControl.api.addFog();
+      break;
+    case "removeFog":
+      SceneControl.api.removeFog();
       break;
     case "flyToDot":
       SceneControl.api.flyToDot([106.4388, 29.4494, 10]);
@@ -152,6 +165,9 @@ const handleSelect = (index: string) => {
       // element.style.display = "block";
       SceneControl.api.addPopup([106.4388, 29.4494, 10], "htmlelement");
       break;
+    case "removeAllEntities":
+        SceneControl.api.removeAllEntities();
+        break;
     default:
       break;
   }

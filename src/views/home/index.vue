@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="cesium-container"
-    id="cesiumContainerapp"
-    ref="cesiumContainer"
-  ></div>
+  <div class="cesium-container" id="cesiumContainerapp" ref="cesiumContainer"></div>
   <div class="container pointer-events-none">
 
     <div class="left-container">
@@ -28,12 +24,12 @@ const cesiumContainer = ref(null);
 
 Cesium.Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmMDc5YmU2NS04YmY4LTQ2MzMtODkxYy1lMjFmM2IyNGM1ODciLCJpZCI6MjI5NTQ2LCJpYXQiOjE3MjE0NDY2Mzl9.5jyLlq5jDKAR-mQAICUfSrD93sXqwHRf8KVbL5Rr_i8";
-onMounted(async() => {
-  console.log("cesium", Cesium);
+onMounted(async () => {
+  // console.log("cesium", Cesium);
   const viewer = new Cesium.Viewer("cesiumContainerapp", {
     //一般false都是隐藏控件
     // 一种地理位置搜索工具，用于显示相机访问的地理位置,默认使用微软的Bing地图
-    geocoder: false,
+    // geocoder: false,
     //首页位置，点击之后将视图跳转到默认视角
     homeButton: false,
     //切换2D、3D 和 Columbus View (CV) 模式
@@ -52,19 +48,20 @@ onMounted(async() => {
     fullscreenButton: false,
     //切换vr模式
     vrButton: false,
+    // 动画效果 --如果要使用动画效果，请将shouldAnimate设置为true -不然就不会有动画效果
+    shouldAnimate: true,
     // 加载地形
     // terrainProvider: await Cesium.CesiumTerrainProvider.fromIonAssetId(3956, {
     //  requestVertexNormals: true
     // })
+    geocoder: Cesium.IonGeocodeProviderType.GOOGLE,
   });
   // 去除版权信息
   (viewer.cesiumWidget.creditContainer as HTMLElement).style.display = "none";
-
-  console.log("viewer", viewer);
-  // SceneWiewer.value = new Scene(viewer);
+  // 初始化场景控制
   SceneControl.api.init(viewer);
-
-  // SceneControl.api.flyToDot([106.4388,29.4494,281])
+  // 开启地形
+  await SceneControl.api.enableTerrain();
 });
 
 
@@ -80,13 +77,14 @@ onMounted(async() => {
   z-index: 0;
 }
 
-.container{
+.container {
   display: flex;
   height: 100%;
   width: 100%;
   position: absolute;
   z-index: 2;
-  .left-container{
+
+  .left-container {
     height: 100%;
   }
 }

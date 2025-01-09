@@ -25,7 +25,57 @@ class Scene {
   }
 
   /**
-   * primitives 渲染
+   * 开启地形模式
+   */
+  public async enableTerrain() {
+    const scene = this.viewer.scene;
+    scene.globe.depthTestAgainstTerrain = true;
+
+    let worldTerrain;
+    try {
+      worldTerrain = await Cesium.createWorldTerrainAsync();
+      this.viewer.scene.terrainProvider = worldTerrain;
+      scene.globe.show = false;
+    } catch (error) {
+      window.alert(`创建世界地形时出错: ${error}`);
+    }
+
+    let worldTileset: Cesium.Cesium3DTileset;
+    try {
+      worldTileset = await Cesium.createGooglePhotorealistic3DTileset({
+        // Only the Google Geocoder can be used with Google Photorealistic 3D Tiles.  Set the `geocode` property of the viewer constructor options to IonGeocodeProviderType.GOOGLE.
+        onlyUsingWithGoogleGeocoder: true,
+      });
+      this.viewer.scene.primitives.add(worldTileset);
+      // 3D Tiles
+      // scene.globe.show = false;
+      // worldTileset.show = true;
+      // 真实感3D瓷砖平铺集
+      scene.globe.show = true;
+      worldTileset.show = false;
+    } catch (error) {
+      console.log(`加载真实感3D瓷砖平铺集时出错: ${error}`);
+    }
+
+    // Sandcastle.addToolbarMenu([
+    //   {
+    //     text: "3D Tiles",
+    //     onselect: () => {
+
+    //   },
+    // },
+    // {
+    //   text: "Terrain",
+    //   onselect: () => {
+    //     scene.globe.show = true;
+    //     worldTileset.show = false;
+    //     },
+    //   },
+    // ]);
+  }
+
+  /**
+   * primitives 渲染 --未完成
    */
   public Cesium3DTileset() {
     //     Cesium3DTileset: 加载 3D Tiles 数据集。
@@ -120,6 +170,50 @@ class Scene {
         outlineWidth: 2,
       },
     });
+  }
+
+  /**
+   * 添加模型 --未完成
+   * @param url 模型地址
+   * @param position [经度，纬度，高度]
+   */
+  public addModel() {
+    //添加模型
+    // 定义立方体几何体
+    var boxGeometry = new Cesium.BoxGeometry({
+      vertexFormat: Cesium.VertexFormat.POSITION_AND_NORMAL,
+      maximum: new Cesium.Cartesian3(250000.0, 250000.0, 250000.0),
+      minimum: new Cesium.Cartesian3(-250000.0, -250000.0, -250000.0),
+    });
+
+    // 定义外观（材质）
+    var material = Cesium.Color.fromBytes(255, 0, 0, 255); // 红色
+    var appearance = new Cesium.PerInstanceColorAppearance({
+      flat: true,
+      // color: material,
+    });
+
+    // 创建Primitive
+    var primitive = new Cesium.Primitive({
+      geometryInstances: new Cesium.GeometryInstance({
+        geometry: boxGeometry,
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(material),
+        },
+      }),
+      appearance: appearance,
+    });
+
+    // 添加到场景
+    this.viewer.scene.primitives.add(primitive);
+
+  }
+
+  /**
+   * 移除所有实体
+   * */
+  public removeAllEntities() {
+    this.viewer.entities.removeAll();
   }
 
   // 飞向点位
@@ -338,7 +432,7 @@ class Scene {
   }
 
   /**
-   * 移除所有图层 创建新的图层
+   * 移除所有影像图层 创建新的图层
    */
   public async removeAllimageryLayers() {
     // 移除所有影像图层
@@ -403,40 +497,193 @@ class Scene {
     const fire = GlobalUtils.getImageUrl("@/assets/image/fire.png");
     console.log("fire", fire);
 
-    // 添加火焰
-    const particleSystem = this.viewer.scene.primitives.add(
-      new Cesium.ParticleSystem({
-        image: fire,
-        startColor: Cesium.Color.WHITE.withAlpha(0.7),
-        endColor: Cesium.Color.WHITE.withAlpha(0.0),
-        startScale: 1.0,
-        endScale: 4.0,
-        minimumParticleLife: 2.0,
-        maximumParticleLife: 5.0,
-        minimumSpeed: 1.0,
-        maximumSpeed: 3.0,
-        imageSize: new Cesium.Cartesian2(20, 20),
-        emissionRate: 1000,
-        lifetime: 30.0,
-        emitter: new Cesium.CircleEmitter(5.0),
-      })
-    );
+    // 确保图像路径有效
+    if (!fire) {
+      console.error("火焰图像加载失败！请检查图像路径。");
+      return;
+    }
 
-    console.log("添加火焰", particleSystem);
+    // 创建粒子系统
+    const particleSystem = new Cesium.ParticleSystem({
+      image: fire,
+      startColor: Cesium.Color.WHITE.withAlpha(0.7), // 使用红色以增加可见性
+      endColor: Cesium.Color.WHITE.withAlpha(0.0), // 逐渐消失
+      startScale: 2.0,
+      endScale: 8.0, // 缩放范围增大
+      minimumParticleLife: 1.0, // 更短的粒子生命
+      maximumParticleLife: 5.0, // 确保粒子有较短的生命周期
+      minimumSpeed: 1.0,
+      maximumSpeed: 2.0, // 调整速度范围
+      imageSize: new Cesium.Cartesian2(30, 30), // 增大图像尺寸以提高可见性
+      emissionRate: 100, // 增加发射率
+      lifetime: 10.0, // 增加粒子系统的生命周期
+      //系统的粒子发射器
+      emitter: new Cesium.ConeEmitter(Cesium.Math.toRadians(45.0)), //BoxEmitter 盒形发射器，ConeEmitter 锥形发射器，SphereEmitter 球形发射器，CircleEmitter圆形发射器
+      modelMatrix: Cesium.Transforms.eastNorthUpToFixedFrame(
+        Cesium.Cartesian3.fromDegrees(positions[0], positions[1], positions[2])
+      ),
+    });
 
-    // 将地理坐标转换为世界坐标系中的坐标
-    const position = Cesium.Cartesian3.fromDegrees(...positions);
+    // 添加到场景中
+    this.viewer.scene.primitives.add(particleSystem);
 
-    // 创建一个矩阵，表示粒子系统的位置
-    const modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+    // 使用相机聚焦粒子系统位置
+    this.viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(
+        positions[0],
+        positions[1],
+        positions[2] + 200
+      ),
+      duration: 2.0, // 平滑过渡，持续1秒
+    });
+  }
 
-    // 将模型矩阵应用到粒子系统
-    particleSystem.modelMatrix = modelMatrix;
+  /**
+   * 添加雨
+   */
+  public addRain(positions: [number, number, number]) {
+    // vue3 导入图片
+    const rain = GlobalUtils.getImageUrl("@/assets/image/boom.png");
+    console.log("rain", rain);
 
-    console.log("火焰粒子系统已定位", particleSystem);
+    // 确保图像路径有效
+    if (!rain) {
+      console.error("雨图像加载失败！请检查图像路径。");
+      return;
+    }
 
-    this.viewer.zoomTo(particleSystem);
+    // 创建粒子系统
+    const particleSystem = new Cesium.ParticleSystem({
+      image: rain,
+      startColor: Cesium.Color.BLUE.withAlpha(0.7), // 使用蓝色以增加可见性
+      endColor: Cesium.Color.BLUE.withAlpha(0.0), // 逐渐消失
+      startScale: 1.0,
+      endScale: 2.0, // 缩放范围增大
+      minimumParticleLife: 1.0, // 更短的粒子生命
+      maximumParticleLife: 5.0, // 确保粒子有较短的生命周期
+      minimumSpeed: 1.0,
+      maximumSpeed: 2.0, // 调整速度范围
+      imageSize: new Cesium.Cartesian2(30, 30), // 增大图像尺寸以提高可见性
+      emissionRate: 100, // 增加发射率
+      lifetime: 10.0, // 增加粒子系统的生命周期
+      //系统的粒子发射器
+      emitter: new Cesium.ConeEmitter(Cesium.Math.toRadians(45.0)), //BoxEmitter 盒形发射器，ConeEmitter 锥形发射器，SphereEmitter 球形发射器，CircleEmitter圆形发射器
+      modelMatrix: Cesium.Transforms.eastNorthUpToFixedFrame(
+        Cesium.Cartesian3.fromDegrees(positions[0], positions[1], positions[2])
+      ),
+    });
 
+    // 添加到场景中
+    this.viewer.scene.primitives.add(particleSystem);
+
+    // 使用相机聚焦粒子系统位置
+    this.viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(
+        positions[0],
+        positions[1],
+        positions[2] + 200
+      ),
+      duration: 2.0, // 平滑过渡，持续1秒
+    });
+  }
+
+  /**
+   * 添加雪
+   */
+  public addSnow(positions: [number, number, number]) {
+    // vue3 导入图片
+    const snow = GlobalUtils.getImageUrl("@/assets/image/snow.png");
+    console.log("snow", snow);
+
+    // 确保图像路径有效
+    if (!snow) {
+      console.error("雪图像加载失败！请检查图像路径。");
+      return;
+    }
+
+    // 创建粒子系统
+    const particleSystem = new Cesium.ParticleSystem({
+      image: snow,
+      startColor: Cesium.Color.WHITE.withAlpha(0.7), // 使用红色以增加可见性
+      endColor: Cesium.Color.WHITE.withAlpha(0.0), // 逐渐消失
+      startScale: 1.0,
+      endScale: 2.0, // 缩放范围增大
+      minimumParticleLife: 1.0, // 更短的粒子生命
+      maximumParticleLife: 5.0, // 确保粒子有较短的生命周期
+      minimumSpeed: 1.0,
+      maximumSpeed: 2.0, // 调整速度范围
+      imageSize: new Cesium.Cartesian2(30, 30), // 增大图像尺寸以提高可见性
+      emissionRate: 100, // 增加发射率
+      lifetime: 10.0, // 增加粒子系统的生命周期
+      //系统的粒子发射器
+      emitter: new Cesium.ConeEmitter(Cesium.Math.toRadians(45.0)), //BoxEmitter 盒形发射器，ConeEmitter 锥形发射器，SphereEmitter 球形发射器，CircleEmitter圆形发射器
+      modelMatrix: Cesium.Transforms.eastNorthUpToFixedFrame(
+        Cesium.Cartesian3.fromDegrees(positions[0], positions[1], positions[2])
+      ),
+    });
+
+    // 添加到场景中
+    this.viewer.scene.primitives.add(particleSystem);
+
+    // 使用相机聚焦粒子系统位置
+    this.viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(
+        positions[0],
+        positions[1],
+        positions[2] + 200
+      ),
+      duration: 2.0, // 平滑过渡，持续1秒
+    });
+  }
+
+  /**
+   * 添加雾
+   */
+  public addFog() {
+    // 启用雾效果
+    this.viewer.scene.fog.enabled = true;
+    // 设置雾的颜色
+    // this.viewer.scene.fog.color = Cesium.Color.WHITE.withAlpha(0.5);
+    // 设置雾的最小高度
+    // this.viewer.scene.fog.minimumHeight = 1000.0;
+    // 设置雾的最大高度
+    this.viewer.scene.fog.maxHeight = 2000.0;
+  }
+
+  /**
+   * 移除雾
+   */
+  public removeFog() {
+    // 禁用雾效果
+    this.viewer.scene.fog.enabled = false;
+  }
+
+  /**
+   * 添加天空盒
+   */
+  public addSkyBox() {
+    // 加载天空盒
+    const skyBox = new Cesium.SkyBox({
+      sources: {},
+    });
+    // 设置天空盒
+    this.viewer.scene.skyBox = skyBox;
+  }
+
+  /**
+   * 移除天空盒
+   */
+  public removeSkyBox() {
+    // 移除天空盒
+    this.viewer.scene.skyBox = undefined;
+  }
+
+  /**
+   * 移除模型
+   */
+  public removeModel(model: Cesium.Model) {
+    // 移除模型
+    this.viewer.scene.primitives.remove(model);
   }
 }
 
