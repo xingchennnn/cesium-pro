@@ -1,5 +1,7 @@
 // import type { Viewer } from "cesium";
 import * as Cesium from "cesium";
+// import fire from "@/assets/icons/fire.png";
+import GlobalUtils from "@/utils/GlobalUtil";
 
 class Scene {
   private constructor() {}
@@ -151,7 +153,7 @@ class Scene {
   // 飞向物体
   public flyToEntity(entity: Cesium.Entity) {
     this.viewer.camera.flyTo({
-      destination:Cesium.Cartesian3.fromDegrees(...entity.position),
+      destination: Cesium.Cartesian3.fromDegrees(...entity.position),
       orientation: {
         heading: Cesium.Math.toRadians(0), //水平角
         pitch: Cesium.Math.toRadians(-60), //竖直角
@@ -359,25 +361,19 @@ class Scene {
     );
   }
 
-
-  //添加管廊模型
+  /**
+   * 添加管廊模型
+   */
   public addPipeLine() {
     // const { viewer, splitViewer } = clientViewerData;
     const redTube = this.viewer.entities.add({
-      name: "红色管道",
+      name: "蓝色管道",
       polylineVolume: {
         positions: Cesium.Cartesian3.fromDegreesArray([
-          -85.0,
-          32.0,
-          -85.0,
-          36.0,
-          -89.0,
-          36.0,
-          -87.84,
-          42.49,
+          -85.0, 32.0, -85.0, 36.0, -89.0, 36.0, -87.84, 42.49,
         ]),
-        shape: this.computeCircle(60000.0),
-        material: Cesium.Color.RED,
+        shape: this.computeCircle(600.0),
+        material: Cesium.Color.BLUE,
         cornerType: Cesium.CornerType.ROUNDED,
       },
     });
@@ -385,15 +381,62 @@ class Scene {
   }
 
   // 计算圆形 -- 添加管廊模型使用
-  private computeCircle(radius:any) {
+  private computeCircle(radius: any) {
     const positions = [];
     for (let i = 0; i < 360; i++) {
       const radians = Cesium.Math.toRadians(i);
       positions.push(
-        new Cesium.Cartesian2(radius * Math.cos(radians), radius * Math.sin(radians))
+        new Cesium.Cartesian2(
+          radius * Math.cos(radians),
+          radius * Math.sin(radians)
+        )
       );
     }
     return positions;
+  }
+
+  /**
+   * 添加火焰
+   */
+  public addFire(positions: [number, number, number]) {
+    // vue3 导入图片
+    const fire = GlobalUtils.getImageUrl("@/assets/image/fire.png");
+    console.log("fire", fire);
+
+    // 添加火焰
+    const particleSystem = this.viewer.scene.primitives.add(
+      new Cesium.ParticleSystem({
+        image: fire,
+        startColor: Cesium.Color.WHITE.withAlpha(0.7),
+        endColor: Cesium.Color.WHITE.withAlpha(0.0),
+        startScale: 1.0,
+        endScale: 4.0,
+        minimumParticleLife: 2.0,
+        maximumParticleLife: 5.0,
+        minimumSpeed: 1.0,
+        maximumSpeed: 3.0,
+        imageSize: new Cesium.Cartesian2(20, 20),
+        emissionRate: 1000,
+        lifetime: 30.0,
+        emitter: new Cesium.CircleEmitter(5.0),
+      })
+    );
+
+    console.log("添加火焰", particleSystem);
+
+    // 将地理坐标转换为世界坐标系中的坐标
+    const position = Cesium.Cartesian3.fromDegrees(...positions);
+
+    // 创建一个矩阵，表示粒子系统的位置
+    const modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+
+    // 将模型矩阵应用到粒子系统
+    particleSystem.modelMatrix = modelMatrix;
+
+    console.log("火焰粒子系统已定位", particleSystem);
+
+    this.viewer.zoomTo(particleSystem);
+
   }
 }
 

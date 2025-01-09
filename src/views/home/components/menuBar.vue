@@ -13,23 +13,40 @@
           <el-icon><location /></el-icon>
           <span>定位</span>
         </template>
-        <el-menu-item-group title="定位">
+        <el-sub-menu index="1-1">
+          <template #title>
+            <span>添加</span>
+          </template>
           <el-menu-item index="addpoint">添加点</el-menu-item>
           <el-menu-item index="addline">添加线</el-menu-item>
           <el-menu-item index="addpolygon">添加面</el-menu-item>
           <el-menu-item index="addPipeLine">添加管道</el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group title="飞行控制">
+        </el-sub-menu>
+        <el-sub-menu index="1-2">
+          <template #title>
+            <span>飞行控制</span>
+          </template>
           <el-menu-item index="flyToDot">飞向点</el-menu-item>
           <el-menu-item index="flyToEntity">飞向物体</el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group title="图标">
+        </el-sub-menu>
+        <el-sub-menu index="1-3">
+          <template #title>
+            <span>图层控制</span>
+          </template>
           <el-menu-item index="addIcon">添加图标</el-menu-item>
           <el-menu-item index="addLabel">添加文字</el-menu-item>
-        </el-menu-item-group>
+        </el-sub-menu>
         <el-sub-menu index="1-4">
           <template #title>html弹窗</template>
           <el-menu-item index="addHtmlElement">弹窗</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="1-5">
+          <template #title>粒子动画</template>
+          <el-menu-item index="addfire">添加火焰动画</el-menu-item>
+          <el-menu-item index="addsmoke">添加烟雾动画</el-menu-item>
+          <el-menu-item index="addrain">添加雨滴动画</el-menu-item>
+          <el-menu-item index="addsnow">添加雪花动画</el-menu-item>
+          <el-menu-item index="addboom">添加爆炸动画</el-menu-item>
         </el-sub-menu>
       </el-sub-menu>
       <el-sub-menu index="2">
@@ -81,7 +98,7 @@ const handleSelect = (index: string) => {
   console.log(index);
   switch (index) {
     case "addpoint":
-      SceneControl.api.addPoint([106.4388, 29.4494, 281]);
+      SceneControl.api.addPoint([106.4388, 29.4494, 10]);
       break;
     case "addline":
       SceneControl.api.addLine([
@@ -101,17 +118,28 @@ const handleSelect = (index: string) => {
     case "addPipeLine":
       SceneControl.api.addPipeLine();
       break;
+    case "addfire":
+      SceneControl.api.addFire([106.4388, 29.4494, 11]);
+      break;
+    case "addsmoke":
+      break;
+    case "addrain":
+      break;
+    case "addsnow":
+      break;
+    case "addboom":
+      break;
     case "flyToDot":
-      SceneControl.api.flyToDot([106.4388, 29.4494, 281]);
+      SceneControl.api.flyToDot([106.4388, 29.4494, 10]);
       break;
     case "flyToEntity":
       // SceneControl.api.flyToEntity();
       break;
     case "addIcon":
-      SceneControl.api.addIcon([106.4388, 29.4494, 281]);
+      SceneControl.api.addIcon([106.4388, 29.4494, 10]);
       break;
     case "addLabel":
-      SceneControl.api.addLabel([106.4388, 29.4494, 281], "测试文字");
+      SceneControl.api.addLabel([106.4388, 29.4494, 10], "测试文字");
       break;
     case "addClickEvent":
       SceneControl.api.addClickEvent();
@@ -122,7 +150,7 @@ const handleSelect = (index: string) => {
     case "addHtmlElement":
       // const element = document.getElementById("htmlelement");
       // element.style.display = "block";
-      SceneControl.api.addPopup([106.4388, 29.4494, 281], "htmlelement");
+      SceneControl.api.addPopup([106.4388, 29.4494, 10], "htmlelement");
       break;
     default:
       break;
