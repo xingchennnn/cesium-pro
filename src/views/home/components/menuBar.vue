@@ -17,6 +17,7 @@
           <el-menu-item index="addpoint">添加点</el-menu-item>
           <el-menu-item index="addline">添加线</el-menu-item>
           <el-menu-item index="addpolygon">添加面</el-menu-item>
+          <el-menu-item index="addPipeLine">添加管道</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group title="飞行控制">
           <el-menu-item index="flyToDot">飞向点</el-menu-item>
@@ -96,6 +97,9 @@ const handleSelect = (index: string) => {
         [106.4388, 29.4494, 10],
         [106.4299, 29.4562, 10],
       ]);
+      break;
+    case "addPipeLine":
+      SceneControl.api.addPipeLine();
       break;
     case "flyToDot":
       SceneControl.api.flyToDot([106.4388, 29.4494, 281]);

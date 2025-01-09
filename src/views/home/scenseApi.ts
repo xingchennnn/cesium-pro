@@ -358,6 +358,43 @@ class Scene {
       )
     );
   }
+
+
+  //添加管廊模型
+  addPipeLine() {
+    // const { viewer, splitViewer } = clientViewerData;
+    const redTube = this.viewer.entities.add({
+      name: "红色管道",
+      polylineVolume: {
+        positions: Cesium.Cartesian3.fromDegreesArray([
+          -85.0,
+          32.0,
+          -85.0,
+          36.0,
+          -89.0,
+          36.0,
+          -87.84,
+          42.49,
+        ]),
+        shape: this.computeCircle(60000.0),
+        material: Cesium.Color.RED,
+        cornerType: Cesium.CornerType.ROUNDED,
+      },
+    });
+    this.viewer.zoomTo(redTube);
+  }
+
+
+  computeCircle(radius:any) {
+    const positions = [];
+    for (let i = 0; i < 360; i++) {
+      const radians = Cesium.Math.toRadians(i);
+      positions.push(
+        new Cesium.Cartesian2(radius * Math.cos(radians), radius * Math.sin(radians))
+      );
+    }
+    return positions;
+  }
 }
 
 export default Scene;
