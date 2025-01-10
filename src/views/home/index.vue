@@ -61,7 +61,7 @@ onMounted(async () => {
   // 初始化场景控制
   SceneControl.api.init(viewer);
   // 开启地形
-  await SceneControl.api.enableTerrain();
+  // await SceneControl.api.enableTerrain();
 });
 
 

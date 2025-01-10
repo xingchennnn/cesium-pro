@@ -78,7 +78,7 @@
             <span>geo</span>
           </template>
           <el-menu-item index="loadGeojson">加载geojson</el-menu-item>
-
+          <el-menu-item index="loadKmlGeojson">加载全国geojson</el-menu-item>
         </el-sub-menu>
       </el-sub-menu>
     </el-menu>
@@ -196,6 +196,10 @@ const handleSelect = (index: string) => {
 
     case "loadGeojson":
       SceneControl.api.loadGeojsonData();
+      break;
+    case "loadKmlGeojson":
+      SceneControl.api.loadKmlGeojsonData();
+    
       break;
     default:
       break;
