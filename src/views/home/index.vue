@@ -21,6 +21,18 @@ const SceneWiewer = ref<Scene | null>(null);
 
 Cesium.Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmMDc5YmU2NS04YmY4LTQ2MzMtODkxYy1lMjFmM2IyNGM1ODciLCJpZCI6MjI5NTQ2LCJpYXQiOjE3MjE0NDY2Mzl9.5jyLlq5jDKAR-mQAICUfSrD93sXqwHRf8KVbL5Rr_i8";
+
+Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
+  // 西经度
+  89.5,
+  // 西纬度
+  20.4494,
+  // 东经度
+  110.4,
+  // 北纬度
+  61.2
+);
+
 onMounted(async() => {
   console.log("cesium", Cesium);
   const viewer = new Cesium.Viewer("cesiumContainerapp", {
