@@ -779,7 +779,7 @@ class Scene {
    * 加载全国json数据
    */
   public async loadKmlGeojsonData() {
-    let dataarray = ["110000", "510000", "500000"];
+    let dataarray = ["500000"];
     Promise.all(
       dataarray.map(async (item) => {
         fetch("/100000/" + item + ".geoJson")
@@ -787,51 +787,65 @@ class Scene {
           // 加载KML数据
           .then((geoJson) => {
             console.log(geoJson);
-            Cesium.GeoJsonDataSource.load(geoJson).then((dataSource) => {
-              // const entities = dataSource.entities.values; //获取dataSource中的entitis集合
-              // for (const key in entities) {
-              // const entity = entities[key]; //遍历集合中每一个实体entity，按照不同的类型去自定义修改
-              // console.log('entity', entity);
+            Cesium.GeoJsonDataSource.load(geoJson, {
+              stroke: Cesium.Color.HOTPINK, //折线和多边形轮廓的默认颜色。
+              fill: Cesium.Color.PINK.withAlpha(0.5), //多边形内部的默认颜色。
+              strokeWidth: 3, //折线和多边形轮廓的默认宽度。
+            }).then((dataSource) => {
+              const entities = dataSource.entities.values; //获取dataSource中的entitis集合
+              for (const key in entities) {
+                const entity = entities[key]; //遍历集合中每一个实体entity，按照不同的类型去自定义修改
+                console.log("entity", entity);
 
-              // if (entity.polyline) {
-              //   //如果是线数据类型
-              //   const entitiyColor = Cesium.Color.fromBytes(255, 50, 98); //根据rbg颜色转换成cesium支持的颜色
-              //   entity.polyline.material = entitiyColor; //复制到线材质
-              //   entity.polyline.outline = false; //取消外轮廓
-              //   entity.polyline.clampToGround = true; //贴地线
-              //   viewer.zoomTo(entity); //定位到实体
-              // } else if (entity.billboard) {
-              //   entity.billboard = {
-              //     image: "/icon/7cd7bcd9-cc03-4d5b-b830-e093541a4b8a.png", //修改图片样式
-              //     scale: 0.5, //图片缩放大小
-              //     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //贴地设置
-              //     horizontalOrigin: Cesium.HorizontalOrigin.CENTER, // //相对于对象的原点（注意是原点的位置）的水平位置
-              //     verticalOrigin: Cesium.VerticalOrigin.BOTTOM, //相对于对象的原点的垂直位置，BOTTOM时锚点在下，对象在上
-              //   };
-              //   entity.label = {
-              //     text: entity.name, //文字描述
-              //     font: "10pt Source Han Sans CN", //字体样式
-              //     fillColor: Cesium.Color.BLACK, //字体颜色
-              //     backgroundColor: Cesium.Color.AQUA, //背景颜色
-              //     showBackground: true, //是否显示背景颜色
-              //     style: Cesium.LabelStyle.FILL, //label样式
-              //     outlineWidth: 2, //外轮廓宽度
-              //     verticalOrigin: Cesium.VerticalOrigin.CENTER, //垂直位置
-              //     horizontalOrigin: Cesium.HorizontalOrigin.LEFT, //水平位置
-              //     pixelOffset: new Cesium.Cartesian2(20, 0), //偏移
-              //     // distanceDisplayCondition: new Cesium.DistanceDisplayCondition(10.0, 20000000.0),
-              //     scaleByDistance: new Cesium.NearFarScalar(
-              //       1000,
-              //       1,
-              //       20000000,
-              //       1.5
-              //     ),
-              //     // eyeOffset: new Cesium.Cartesian3(0, 0, -10000),
-              //     disableDepthTestDistance: Number.POSITIVE_INFINITY, //一个属性，指定从相机到该距离时禁用深度测试的距离
-              //     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //贴地设置
-              //   };
-              // }
-              // }
+                if (entity.polyline) {
+                  //如果是线数据类型
+                  const entitiyColor = Cesium.Color.fromBytes(30, 50, 98); //根据rbg颜色转换成cesium支持的颜色
+                  // entity.polyline.material = entitiyColor; //复制到线材质
+                  // entity.polyline.outline = false; //取消外轮廓
+                  // entity.polyline.clampToGround = true; //贴地线
+
+                  entity.polyline = new Cesium.PolylineGraphics({
+                    positions: entity.polyline.positions,
+                    width: 10,
+                    material: entitiyColor,
+                    clampToGround: true,
+                    depthFailMaterial: Cesium.Color.WHITE.withAlpha(0.0),
+                    arcType: Cesium.ArcType.NONE,
+                  });
+
+                  this.viewer.zoomTo(entity); //定位到实体
+                } else if (entity.billboard) {
+                  entity.billboard = new Cesium.BillboardGraphics({
+                    image: "/icon/7cd7bcd9-cc03-4d5b-b830-e093541a4b8a.png", //修改图片样式
+                    scale: 0.5, //图片缩放大小
+                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //贴地设置
+                    horizontalOrigin: Cesium.HorizontalOrigin.CENTER, // //相对于对象的原点（注意是原点的位置）的水平位置
+                    verticalOrigin: Cesium.VerticalOrigin.BOTTOM, //相对于对象的原点的垂直位置，BOTTOM时锚点在下，对象在上
+                  });
+                  entity.label = new Cesium.LabelGraphics({
+                    text: entity.name, //文字描述
+                    font: "10pt Source Han Sans CN", //字体样式
+                    fillColor: Cesium.Color.BLACK, //字体颜色
+                    backgroundColor: Cesium.Color.AQUA, //背景颜色
+                    showBackground: true, //是否显示背景颜色
+                    style: Cesium.LabelStyle.FILL, //label样式
+                    outlineWidth: 2, //外轮廓宽度
+                    verticalOrigin: Cesium.VerticalOrigin.CENTER, //垂直位置
+                    horizontalOrigin: Cesium.HorizontalOrigin.LEFT, //水平位置
+                    pixelOffset: new Cesium.Cartesian2(20, 0), //偏移
+                    // distanceDisplayCondition: new Cesium.DistanceDisplayCondition(10.0, 20000000.0),
+                    scaleByDistance: new Cesium.NearFarScalar(
+                      1000,
+                      1,
+                      20000000,
+                      1.5
+                    ),
+                    // eyeOffset: new Cesium.Cartesian3(0, 0, -10000),
+                    disableDepthTestDistance: Number.POSITIVE_INFINITY, //一个属性，指定从相机到该距离时禁用深度测试的距离
+                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //贴地设置
+                  });
+                }
+              }
 
               this.viewer.dataSources.add(dataSource);
               this.viewer.zoomTo(dataSource);
