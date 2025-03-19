@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import cesium from 'vite-plugin-cesium';
+import { VueMcp } from 'vite-plugin-vue-mcp'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -9,6 +10,11 @@ export default defineConfig({
     vue(),
     // 使用 vite-plugin-cesium 插件
     cesium(),
+    // 使用 vite-plugin-vue-mcp 插件
+    VueMcp({
+      // port: 10087, // mcp服务端口号
+      // printUrl: true, // 是否打印服务地址
+    })
   ],
   define: {
     CESIUM_BASE_URL: JSON.stringify(""),  // 在这里定义cesium的全局变量

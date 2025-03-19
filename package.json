@@ -1,9 +1,10 @@
 {
   "name": "cesium-pro",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "i": "npm install && vite",
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
@@ -37,6 +38,7 @@
     "vite": "^6.0.5",
     "vite-plugin-copy": "^0.1.6",
     "vite-plugin-static-copy": "^2.2.0",
+    "vite-plugin-vue-mcp": "^0.2.2",
     "vue-tsc": "^2.2.0"
   }
 }

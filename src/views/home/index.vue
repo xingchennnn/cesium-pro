@@ -3,7 +3,12 @@
   <div class="container pointer-events-none">
 
     <div class="left-container">
-      <menu-bar></menu-bar>
+      <!-- <div class="logo">
+        123
+      </div> -->
+      <div class="menu-bar">
+        <menu-bar></menu-bar>
+      </div>
     </div>
   </div>
 </template>
@@ -73,7 +78,7 @@ onMounted(async() => {
   // 初始化场景控制
   SceneControl.api.init(viewer);
   // 开启地形
-  // await SceneControl.api.enableTerrain();
+  await SceneControl.api.enableTerrain();
 });
 
 
@@ -98,6 +103,12 @@ onMounted(async() => {
 
   .left-container {
     height: 100%;
+    .menu-bar{
+      height: 100%;
+
+      overflow-y: scroll;
+    }
   }
 }
+
 </style>
